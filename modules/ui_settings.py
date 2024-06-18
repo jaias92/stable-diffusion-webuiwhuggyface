@@ -106,14 +106,9 @@ class UiSettings:
         self.components = []
         self.component_dict = {}
         self.dummy_component = dummy_component
-
         shared.settings_components = self.component_dict
-
         # we add this as late as possible so that scripts have already registered their callbacks
-        opts.data_labels.update(options_section(('callbacks', "Callbacks", "system"), {
-            **shared_items.callbacks_order_settings(),
-        }))
-
+        opts.data_labels.update(options_section(('callbacks', "Callbacks", "system"), {**shared_items.callbacks_order_settings()}))
         opts.reorder()
 
         with gr.Blocks(analytics_enabled=False) as settings_interface:
