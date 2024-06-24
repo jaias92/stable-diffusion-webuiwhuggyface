@@ -160,7 +160,6 @@ class UiSettings:
                 if current_tab is not None:
                     current_row.__exit__()
                     current_tab.__exit__()
-
                 with gr.TabItem("Defaults", id="defaults", elem_id="settings_tab_defaults"):
                     loadsave.create_ui()
 
