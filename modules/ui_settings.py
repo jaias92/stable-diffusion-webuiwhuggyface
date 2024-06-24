@@ -196,11 +196,8 @@ class UiSettings:
                     t = timer.Timer()
                     func()
                     t.record(text)
-
                     return f'{text} in {t.total:.1f}s'
-
                 return handler
-
             unload_sd_model.click(
                 fn=call_func_and_return_text(sd_models.unload_model_weights, 'Unloaded the checkpoint'),
                 inputs=[],
