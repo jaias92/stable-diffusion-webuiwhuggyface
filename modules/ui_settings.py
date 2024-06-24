@@ -106,9 +106,14 @@ class UiSettings:
         self.components = []
         self.component_dict = {}
         self.dummy_component = dummy_component
+
         shared.settings_components = self.component_dict
+
         # we add this as late as possible so that scripts have already registered their callbacks
-        opts.data_labels.update(options_section(('callbacks', "Callbacks", "system"), {**shared_items.callbacks_order_settings()}))
+        opts.data_labels.update(options_section(('callbacks', "Callbacks", "system"), {
+            **shared_items.callbacks_order_settings(),
+        }))
+
         opts.reorder()
 
         with gr.Blocks(analytics_enabled=False) as settings_interface:
@@ -160,6 +165,7 @@ class UiSettings:
                 if current_tab is not None:
                     current_row.__exit__()
                     current_tab.__exit__()
+
                 with gr.TabItem("Defaults", id="defaults", elem_id="settings_tab_defaults"):
                     loadsave.create_ui()
 
@@ -173,6 +179,7 @@ class UiSettings:
                             sysinfo_check_output = gr.HTML("", elem_id="sysinfo_validity")
                         with gr.Column(scale=100):
                             pass
+
                 with gr.TabItem("Actions", id="actions", elem_id="settings_tab_actions"):
                     request_notifications = gr.Button(value='Request browser notifications', elem_id="request_notifications")
                     download_localization = gr.Button(value='Download localization template', elem_id="download_localization")
@@ -183,12 +190,16 @@ class UiSettings:
                     with gr.Row():
                         calculate_all_checkpoint_hash = gr.Button(value='Calculate hash for all checkpoint', elem_id="calculate_all_checkpoint_hash")
                         calculate_all_checkpoint_hash_threads = gr.Number(value=1, label="Number of parallel calculations", elem_id="calculate_all_checkpoint_hash_threads", precision=0, minimum=1)
+
                 with gr.TabItem("Licenses", id="licenses", elem_id="settings_tab_licenses"):
                     gr.HTML(shared.html("licenses.html"), elem_id="licenses")
+
                 self.show_all_pages = gr.Button(value="Show all pages", elem_id="settings_show_all_pages")
                 self.show_one_page = gr.Button(value="Show only one page", elem_id="settings_show_one_page", visible=False)
                 self.show_one_page.click(lambda: None)
+
                 self.search_input = gr.Textbox(value="", elem_id="settings_search", max_lines=1, placeholder="Search...", show_label=False)
+
                 self.text_settings = gr.Textbox(elem_id="settings_json", value=lambda: opts.dumpjson(), visible=False)
 
             def call_func_and_return_text(func, text):
@@ -196,8 +207,11 @@ class UiSettings:
                     t = timer.Timer()
                     func()
                     t.record(text)
+
                     return f'{text} in {t.total:.1f}s'
+
                 return handler
+
             unload_sd_model.click(
                 fn=call_func_and_return_text(sd_models.unload_model_weights, 'Unloaded the checkpoint'),
                 inputs=[],
